@@ -7,6 +7,8 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <AssemblyName>Azure.Bicep.MSBuild</AssemblyName>
     <RootNamespace>Azure.Bicep.MSBuild</RootNamespace>
+    <EnableNuget>true</EnableNuget>
+    <PackageTags>CLI;compiler</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
