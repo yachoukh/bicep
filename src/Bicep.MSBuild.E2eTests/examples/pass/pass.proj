@@ -10,12 +10,12 @@
     Pickup latest available packages (including prerelease) from local feed configured in NuGet.config.
   -->
   <ItemGroup>
-    <PackageReference Include="Azure.Bicep.CommandLine.win-x64" Version="*-*" />
+    <PackageReference Include="Azure.Bicep.CommandLine.$(RuntimeSuffix)" Version="*-*" />
     <PackageReference Include="Azure.Bicep.MSBuild" Version="*-*" />
   </ItemGroup>
 
   <Target Name="RunTool" AfterTargets="Build">
-    <Message Importance="High" Text="Hello!" />
+    <Error Text="This project requires the RuntimeSuffix property to be set." Condition=" $(RuntimeSuffix) == '' " />
     <Bicep SourceFile="pass.bicep" OutputFile="pass.json" ToolExe="$(BicepPath)" />
   </Target>
 </Project>

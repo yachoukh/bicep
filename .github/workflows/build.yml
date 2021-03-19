@@ -187,7 +187,7 @@ jobs:
           path: ./src/Bicep.MSBuild.E2eTests/examples/local-packages
 
       - name: Build CLI Package
-        run: dotnet build --configuration release -r ${{ matrix.rid }} ./src/Bicep.Cli.Nuget/nuget.proj
+        run: dotnet build --configuration release /p:RuntimeSuffix=${{ matrix.rid }} ./src/Bicep.Cli.Nuget/nuget.proj
       
       - name: Upload CLI Package
         uses: actions/upload-artifact@v2
@@ -204,7 +204,7 @@ jobs:
           path: ./src/Bicep.MSBuild.E2eTests/examples/local-packages
 
       - name: Run MSBuild Task E2E tests
-        run: dotnet build ./src/Bicep.MSBuild.E2eTests/examples/pass/pass.proj
+        run: dotnet build ./src/Bicep.MSBuild.E2eTests/examples/pass/pass.proj /p:RuntimeSuffix=${{ matrix.rid }}
 
   build-vsix:
     name: 'Build VSIX'
