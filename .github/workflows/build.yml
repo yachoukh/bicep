@@ -175,7 +175,7 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
 
       - name: Check binfmt_misc
-        if: ${{ matrix.rid == 'linux-musl-x64' }}
+        if: ${{ matrix.rid == 'linux-x64' }}
         run: ls /proc/sys/fs/binfmt_misc/
 
       - name: Download Bicep CLI
