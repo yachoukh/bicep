@@ -188,7 +188,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: bicep-nupkg-any
-          path: ./src/Bicep.MSBuild.E2eTests/examples/local-packages
+          path: ./src/Bicep.MSBuild.E2eTests/local-packages
 
       - name: Build CLI Package
         run: dotnet build --configuration release /p:RuntimeSuffix=${{ matrix.rid }} ./src/Bicep.Cli.Nuget/nuget.proj
@@ -204,7 +204,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: bicep-nupkg-${{ matrix.rid }}
-          path: ./src/Bicep.MSBuild.E2eTests/examples/local-packages
+          path: ./src/Bicep.MSBuild.E2eTests/local-packages
 
       - name: Run MSBuild Task E2E tests
         run: dotnet build ./src/Bicep.MSBuild.E2eTests/examples/multiple/multiple.proj /p:RuntimeSuffix=${{ matrix.rid }}
