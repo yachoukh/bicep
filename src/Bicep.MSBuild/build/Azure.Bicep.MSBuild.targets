@@ -21,6 +21,8 @@
     <MakeDir Directories=" %(_BicepOutputFile.RootDir)%(Directory)" />
 
     <Bicep SourceFile="%(_BicepResolved.FullPath)" OutputFile="%(OutputFile)" ToolExe="$(BicepPath)" />
+    
+    <Message Importance="High" Text="$(MSBuildProjectName) -&gt; %(_BicepResolved.OutputFile)" />
 
     <ItemGroup>
       <FileWrites Include="%(_BicepResolved.OutputFile)" />
