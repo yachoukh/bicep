@@ -6,5 +6,5 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ["<rootDir>/out/**/*.js"],
   coveragePathIgnorePatterns: ["/test/"],
-  //setupFilesAfterEnv: ["<rootDir>/out/test/unit/setup.js"],
+  setupFilesAfterEnv: ["<rootDir>/out/setup.js"],
 };
