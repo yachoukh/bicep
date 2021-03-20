@@ -4,6 +4,7 @@
 import * as spawn from 'cross-spawn';
 import * as path from "path";
 import * as fs from "fs";
+import { SpawnSyncReturns } from 'node:child_process';
 
 export interface Example {
   projectDir: string,
@@ -18,6 +19,18 @@ export function createExample(projectName: string): Example {
   }
 };
 
+export function cleanExample(example: Example) {
+  const result = spawn.sync("git", ["clean", "-dfx"], {
+    cwd: example.projectDir,
+    stdio: "pipe",
+    encoding: "utf-8",
+  });
+
+  if(result.status != 0) {
+    handleFailure("git", result);
+  }
+}
+
 export function buildExample(example: Example, runtimeSuffix: string, expectSuccess: boolean = true) {
   const result = spawn.sync("dotnet", ["build", `/p:RuntimeSuffix=${runtimeSuffix}`, "/bl", example.projectFile], {
     cwd: example.projectDir,
@@ -26,15 +39,7 @@ export function buildExample(example: Example, runtimeSuffix: string, expectSucc
   });
 
   if(expectSuccess && result.status != 0) {
-    if(result.stderr.length > 0) {
-      fail(result.stderr)
-    }
-
-    if(result.stdout.length > 0) {
-      fail(result.stdout)
-    }
-
-    fail(`MSBuild exit code ${result.status}`);
+    handleFailure("MSBuild", result);
   }
 
   return result;
@@ -49,4 +54,16 @@ export function expectTemplate(example: Example, relativeFilePath: string) {
   } catch (error) {
     fail(error);
   }
+}
+
+function handleFailure(tool: string, result: SpawnSyncReturns<string>) {
+  if (result.stderr.length > 0) {
+    fail(result.stderr);
+  }
+
+  if (result.stdout.length > 0) {
+    fail(result.stdout);
+  }
+
+  fail(`${tool} exit code ${result.status}`);
 }
