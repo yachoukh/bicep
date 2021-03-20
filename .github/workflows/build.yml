@@ -174,6 +174,10 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1.7.2
 
+      - name: Check binfmt_misc
+        if: ${{ matrix.rid == 'linux-musl-x64' }}
+        run: ls /proc/sys/fs/binfmt_misc/
+
       - name: Download Bicep CLI
         uses: actions/download-artifact@v2
         with:
@@ -196,7 +200,6 @@ jobs:
           path: ./src/Bicep.Cli.Nuget/*.nupkg
           if-no-files-found: error
       
-      # TODO: Find a way to copy local files in an OS-agnostic way
       - name: Download CLI Package
         uses: actions/download-artifact@v2
         with:
@@ -204,7 +207,7 @@ jobs:
           path: ./src/Bicep.MSBuild.E2eTests/examples/local-packages
 
       - name: Run MSBuild Task E2E tests
-        run: dotnet build ./src/Bicep.MSBuild.E2eTests/examples/pass/pass.proj /p:RuntimeSuffix=${{ matrix.rid }}
+        run: dotnet build ./src/Bicep.MSBuild.E2eTests/examples/multiple/multiple.proj /p:RuntimeSuffix=${{ matrix.rid }}
 
   build-vsix:
     name: 'Build VSIX'
