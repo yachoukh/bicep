@@ -35,5 +35,19 @@ namespace Azure.Bicep.MSBuild
 
             return builder.ToString();
         }
+
+        protected override void LogEventsFromTextOutput(string singleLine, MessageImportance messageImportance)
+        {
+            // diagnostics emitted during compilation follow the canonical msbuild format and don't require re-parsing
+            // however startup errors simply write a message to StdErr
+            if (singleLine.Contains(") : "))
+            {
+                // likely a canonical diagnostic
+                base.LogEventsFromTextOutput(singleLine, messageImportance);
+            }
+
+            // log error as-is
+            this.Log.LogError(singleLine);
+        }
     }
 }

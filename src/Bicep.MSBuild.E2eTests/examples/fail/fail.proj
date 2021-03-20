@@ -14,8 +14,7 @@
     <PackageReference Include="Azure.Bicep.MSBuild" Version="*-*" />
   </ItemGroup>
 
-  <Target Name="RunTool" AfterTargets="Build">
-    <Message Importance="High" Text="Hello!" />
-    <Bicep SourceFile="fail.bicep" OutputFile="fail.json" ToolExe="$(BicepPath)" />
-  </Target>
+  <ItemGroup>
+    <Bicep Include="fail.bicep" />
+  </ItemGroup>
 </Project>

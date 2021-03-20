@@ -1,0 +1,29 @@
+<Project TreatAsLocalProperty="TaskRuntimeDirectory;TaskAssembly">
+  <PropertyGroup>
+    <!-- by default run after the Build target -->
+    <BicepCompileAfterTargets Condition=" $(BicepCompileAfterTargets) == '' ">Build</BicepCompileAfterTargets>
+
+    <!-- default to project OutputPath -->
+    <BicepOutputPath Condition=" $(BicepOutputPath) == '' ">$(OutputPath)</BicepOutputPath>
+  </PropertyGroup>
+
+  <Target Name="BicepCompile" Condition=" @(Bicep) != '' " DependsOnTargets="$(BicepCompileDependsOn)" AfterTargets="$(BicepCompileAfterTargets)" BeforeTargets="$(BicepCompileBeforeTargets)">
+    <ItemGroup>
+      <_BicepResolved Include="@(Bicep)">
+        <!-- populate missing output file metadata using the default path -->
+        <OutputFile Condition=" %(Bicep.OutputFile) == '' ">$(BicepOutputPath)\%(FileName)$(BicepDefaultOutputFileExtension)</OutputFile>
+      </_BicepResolved>
+
+      <_BicepOutputFile Include="%(_BicepResolved.OutputFile)" />
+    </ItemGroup>
+
+    <!-- pre-create directories for all the outputs in case they don't exist -->
+    <MakeDir Directories=" %(_BicepOutputFile.RootDir)%(Directory)" />
+
+    <Bicep SourceFile="%(_BicepResolved.FullPath)" OutputFile="%(OutputFile)" ToolExe="$(BicepPath)" />
+
+    <ItemGroup>
+      <FileWrites Include="%(_BicepResolved.OutputFile)" />
+    </ItemGroup>
+  </Target>
+</Project>

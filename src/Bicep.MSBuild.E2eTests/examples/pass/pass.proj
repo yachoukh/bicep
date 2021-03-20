@@ -14,8 +14,7 @@
     <PackageReference Include="Azure.Bicep.MSBuild" Version="*-*" />
   </ItemGroup>
 
-  <Target Name="RunTool" AfterTargets="Build">
-    <Error Text="This project requires the RuntimeSuffix property to be set." Condition=" $(RuntimeSuffix) == '' " />
-    <Bicep SourceFile="pass.bicep" OutputFile="pass.json" ToolExe="$(BicepPath)" />
-  </Target>
+  <ItemGroup>
+    <Bicep Include="pass.bicep"/>
+  </ItemGroup>
 </Project>
