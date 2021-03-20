@@ -4,6 +4,7 @@
 <Project Sdk="Microsoft.Build.NoTargets">
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
+    <BicepOutputPath>bin\$(Configuration)\templates</BicepOutputPath>
   </PropertyGroup>
 
   <!-- 
@@ -15,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Bicep Include="pass.bicep"/>
+    <Bicep Include="passthrough.bicep"/>
+    <Bicep Include="empty.bicep"/>
+    <Bicep Include="subdir\theAnswer.bicep">
+      <OutputFile>$(BicepOutputPath)\special\special.arm</OutputFile>
+    </Bicep>
   </ItemGroup>
 </Project>
